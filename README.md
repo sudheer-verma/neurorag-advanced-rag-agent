@@ -115,6 +115,8 @@ External integrations activate only when credentials are configured:
 
 The `.env` file is ignored. Only `.env.example` contains placeholders.
 
+You can verify provider activation at `GET /health`; secret values are never returned.
+
 ## Retrieval Details
 
 - Dense embeddings use a deterministic hashed local vector and persistent Qdrant.
