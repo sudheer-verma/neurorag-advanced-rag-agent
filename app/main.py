@@ -86,6 +86,19 @@ def restore_index():
                     "text": child.get("parent_text", child.get("text", "")),
                 }
             pipeline.mapping[child["id"]] = parent_id
+            document_id = child.get("document_id")
+            if document_id and hasattr(pipeline, "document_records"):
+                pipeline.document_records.setdefault(document_id, {
+                    "id": document_id,
+                    "title": child.get("title", "Document"),
+                    "status": "indexed",
+                    "chunk_count": sum(
+                        1 for item in restored
+                        if item.get("document_id") == document_id
+                    ),
+                    "metadata": {key: value for key, value in child.items()
+                                 if key in {"filename", "source"}},
+                })
         sparse.index_documents(pipeline.children)
     if not pipeline.children:
         sample_dir = root / "data" / "sample_documents"
