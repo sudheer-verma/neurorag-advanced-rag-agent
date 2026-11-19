@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi import Request
+from fastapi.responses import JSONResponse
 from pathlib import Path
 from contextlib import asynccontextmanager
 
@@ -56,6 +58,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(ValueError)
+async def value_error_handler(request: Request, exc: ValueError):
+    return JSONResponse(
+        status_code=422,
+        content={"error": "invalid_request", "detail": str(exc), "path": str(request.url.path)},
+    )
 
 app.include_router(create_chat_router(rag_service, telemetry))
 app.include_router(create_document_router(pipeline, settings))

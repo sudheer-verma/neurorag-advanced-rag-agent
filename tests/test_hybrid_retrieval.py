@@ -20,3 +20,20 @@ def test_hybrid_retrieval_returns_parent():
     result = hybrid.search("retrieval")
     assert result[0]["id"] == "parent_1"
     assert result[0]["text"] == "Full parent document"
+
+
+def test_hybrid_duplicate_children_return_one_parent():
+    sparse = SparseRetriever()
+    children = [
+        {"id": "child_1", "parent_id": "parent_1", "text": "retrieval augmented generation"},
+        {"id": "child_2", "parent_id": "parent_1", "text": "retrieval augmented generation"},
+    ]
+    sparse.index_documents(children)
+    hybrid = HybridRetriever(
+        DenseStub(),
+        sparse,
+        parents={"parent_1": {"id": "parent_1", "text": "Full parent document"}},
+        mapping={"child_1": "parent_1", "child_2": "parent_1"},
+    )
+    result = hybrid.search("retrieval", top_k=20)
+    assert len(result) == 1
