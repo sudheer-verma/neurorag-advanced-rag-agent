@@ -95,7 +95,15 @@ def restore_index():
                     from app.ingestion.document_loader import load_document
                     text = load_document(str(sample_path))
                     if text.strip():
-                        pipeline.ingest(text, sample_path.stem, {"filename": sample_path.name})
+                        ingested = pipeline.ingest(text, sample_path.stem, {"filename": sample_path.name})
+                        if hasattr(pipeline, "document_records"):
+                            pipeline.document_records[ingested["document_id"]] = {
+                                "id": ingested["document_id"],
+                                "title": ingested["title"],
+                                "status": "indexed",
+                                "chunk_count": ingested["chunk_count"],
+                                "metadata": {"filename": sample_path.name},
+                            }
                 except Exception as exc:
                     logger.error("Failed to ingest sample document %s: %s", sample_path.name, exc)
 

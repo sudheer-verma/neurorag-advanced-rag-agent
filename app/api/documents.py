@@ -7,6 +7,7 @@ from app.ingestion.document_loader import load_document
 def create_document_router(pipeline, settings) -> APIRouter:
     router = APIRouter(prefix="/api", tags=["documents"])
     records = {}
+    pipeline.document_records = records
 
     @router.get("/documents")
     def documents():
