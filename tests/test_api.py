@@ -33,3 +33,19 @@ def test_chat_and_memories(client):
 def test_invalid_chat(client):
     response = client.post("/api/chat", json={"query": "", "user_id": "", "session_id": ""})
     assert response.status_code == 422
+
+
+def test_document_upload_rejects_unsupported_file(client):
+    response = client.post(
+        "/api/documents/upload",
+        files={"file": ("notes.md", b"# Notes", "text/markdown")},
+    )
+    assert response.status_code == 400
+
+
+def test_empty_upload_is_rejected(client):
+    response = client.post(
+        "/api/documents/upload",
+        files={"file": ("empty.txt", b"", "text/plain")},
+    )
+    assert response.status_code == 422

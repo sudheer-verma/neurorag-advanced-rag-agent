@@ -7,6 +7,15 @@ class DenseStub:
         return [{"id": "child_1", "parent_id": "parent_1", "text": "retrieval augmented generation"}]
 
 
+def test_dense_embedding_is_normalized_and_deterministic():
+    from app.retrieval.dense_retriever import LocalDenseEmbeddings
+    embeddings = LocalDenseEmbeddings()
+    first = embeddings.embed("Python retrieval")
+    second = embeddings.embed("Python retrieval")
+    assert first == second
+    assert abs(sum(value * value for value in first) - 1.0) < 0.001
+
+
 def test_hybrid_retrieval_returns_parent():
     sparse = SparseRetriever()
     children = [{"id": "child_1", "parent_id": "parent_1", "text": "retrieval augmented generation"}]

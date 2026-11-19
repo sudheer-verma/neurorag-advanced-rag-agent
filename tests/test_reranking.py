@@ -20,3 +20,14 @@ def test_cohere_mock():
         client.return_value.rerank.return_value = response
         result = reranker.rerank("query", [{"id": "1", "text": "answer"}], top_k=5)
     assert result[0]["rerank_provider"] == "cohere"
+
+
+def test_reranker_falls_back_when_external_api_fails():
+    reranker = Reranker("cohere", "test-key")
+    reranker.engine.rerank = lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("service unavailable"))
+    result, latency = reranker.rerank(
+        "python",
+        [{"id": "1", "text": "Python programming"}],
+    )
+    assert latency >= 0
+    assert all(document["rerank_provider"] == "local" for document in result)

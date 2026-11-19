@@ -183,3 +183,13 @@ Import `postman/neurorag_collection.json` in Postman and set `baseUrl` if needed
 - Local generation is deterministic and does not substitute for a general-purpose LLM.
 - Cohere/OpenAI/Mem0 integrations require credentials and are not verified without them.
 - Remote Qdrant is currently not automatically activated by `QDRANT_URL`; local persistent Qdrant is used.
+
+## Final Validation
+
+The project is intended to be validated in this order:
+
+1. Run `python -m pytest`.
+2. Run `python scripts\ingest.py`.
+3. Start `python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`.
+4. Open `/health`, `/docs`, and `/`.
+5. Exercise chat, memory, upload, and document endpoints through the dashboard or Postman.
