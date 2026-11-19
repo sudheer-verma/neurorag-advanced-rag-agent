@@ -65,6 +65,9 @@ async function sendChat(){
  finally{send.disabled=false;send.textContent="Send"}
 }
 $("#clear-chat").addEventListener("click",()=>{$("#messages").innerHTML='<div class="empty">Ask a question about your indexed documents.</div>';$("#chat-memories").textContent="None";$("#chat-sources").textContent="None"});
+$("#chat-query").addEventListener("keydown",e=>{
+  if(e.key==="Enter" && (e.ctrlKey || e.metaKey)) sendChat();
+});
 
 async function uploadFile(file){
  if(!file)return;
