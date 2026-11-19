@@ -1,0 +1,4 @@
+Python is a high-level programming language known for clear syntax and extensive libraries.
+A merge sort routine divides a list into halves, recursively sorts each half, and merges sorted halves.
+Python code-only answers can omit unnecessary prose when the response preference is code-only.
+

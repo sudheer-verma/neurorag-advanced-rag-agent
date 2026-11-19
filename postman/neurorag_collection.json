@@ -1,0 +1,51 @@
+{
+  "info": {
+    "name": "NeuroRAG API",
+    "description": "NeuroRAG API collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://127.0.0.1:8000"}
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": {"method": "GET", "header": [], "url": "{{baseUrl}}/health"}
+    },
+    {
+      "name": "Chat",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\n  \"query\": \"Explain retrieval augmented generation\",\n  \"user_id\": \"usr_99\",\n  \"session_id\": \"session_001\"\n}"},
+        "url": "{{baseUrl}}/api/chat"
+      }
+    },
+    {
+      "name": "Get user memories",
+      "request": {"method": "GET", "header": [], "url": "{{baseUrl}}/api/users/usr_99/memories"}
+    },
+    {
+      "name": "Get documents",
+      "request": {"method": "GET", "header": [], "url": "{{baseUrl}}/api/documents"}
+    },
+    {
+      "name": "Ingest text",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\n  \"text\": \"Retrieval augmented generation combines retrieval with generation.\",\n  \"title\": \"RAG overview\",\n  \"metadata\": {\"source\": \"postman\"}\n}"},
+        "url": "{{baseUrl}}/api/ingest"
+      }
+    },
+    {
+      "name": "Upload document",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {"mode": "formdata", "formdata": [{"key": "file", "type": "file", "src": "/data/sample_documents/retrieval_augmented_generation.txt"}]},
+        "url": "{{baseUrl}}/api/documents/upload"
+      }
+    }
+  ]
+}

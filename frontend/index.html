@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NeuroRAG Dashboard</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">N</span><div><strong>NeuroRAG</strong><small>Advanced RAG</small></div></div>
+    <nav>
+      <button class="nav-item active" data-view="dashboard">Dashboard</button>
+      <button class="nav-item" data-view="chat">AI Chat</button>
+      <button class="nav-item" data-view="documents">Documents</button>
+      <button class="nav-item" data-view="memories">Semantic Memory</button>
+      <button class="nav-item" data-view="performance">Performance</button>
+      <button class="nav-item" data-view="settings">Settings</button>
+    </nav>
+  </aside>
+  <main>
+    <header><div><p id="eyebrow">Overview</p><h1 id="page-title">Dashboard</h1></div><div class="status-pill"><span id="status-dot"></span><span id="status-text">Checking backend</span></div></header>
+    <section id="dashboard" class="view active">
+      <div class="metrics">
+        <article><p>Documents indexed</p><strong id="metric-documents">0</strong><small>Parent/child index</small></article>
+        <article><p>Conversations</p><strong id="metric-conversations">0</strong><small>Recorded chat turns</small></article>
+        <article><p>Saved memories</p><strong id="metric-memories">0</strong><small>Current user</small></article>
+        <article><p>Avg. response</p><strong id="metric-latency">0 ms</strong><small>Total latency</small></article>
+      </div>
+      <div class="grid-two">
+        <article class="panel"><h2>Retrieval performance</h2><div class="bars" id="dashboard-bars"></div></article>
+        <article class="panel"><h2>Quick actions</h2><div class="quick-actions"><button data-action="chat">Start a chat</button><button data-action="documents">Upload document</button><button data-action="memories">View memories</button></div></article>
+      </div>
+    </section>
+    <section id="chat" class="view">
+      <div class="chat-layout">
+        <div class="chat-main panel"><div id="messages" class="messages"><div class="empty">Ask a question about your indexed documents.</div></div><div class="chat-input"><input id="chat-query" placeholder="Ask NeuroRAG..." aria-label="Chat message"><button id="send-chat">Send</button></div></div>
+        <aside class="chat-side panel"><label>User ID<input id="chat-user" value="usr_99"></label><label>Session ID<input id="chat-session" value="session_001"></label><button id="clear-chat" class="secondary">Clear conversation</button><h3>Memories used</h3><div id="chat-memories" class="mini-list">None</div><h3>Sources</h3><div id="chat-sources" class="mini-list">None</div></aside>
+      </div>
+    </section>
+    <section id="documents" class="view">
+      <div class="toolbar"><input id="document-search" placeholder="Search documents"><label class="upload-button">Upload PDF / TXT<input id="document-file" type="file" accept=".pdf,.txt" hidden></label></div>
+      <div id="drop-zone" class="drop-zone">Drop PDF or TXT files here</div>
+      <div id="document-list" class="document-list"></div>
+    </section>
+    <section id="memories" class="view">
+      <div class="toolbar"><input id="memory-user" value="usr_99" placeholder="User ID"><button id="load-memories">Load memories</button></div>
+      <div id="memory-list" class="memory-list"></div>
+    </section>
+    <section id="performance" class="view"><div class="metrics" id="performance-metrics"></div><article class="panel"><h2>Latest telemetry</h2><div id="telemetry-detail" class="detail-grid"></div></article></section>
+    <section id="settings" class="view"><div id="settings-grid" class="settings-grid"></div></section>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script src="/assets/script.js"></script>
+</body>
+</html>

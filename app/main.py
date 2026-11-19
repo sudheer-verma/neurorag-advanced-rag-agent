@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 from app.core.config import get_settings
 from app.core.logging import configure_logging
@@ -33,11 +34,20 @@ llm = LLMService(settings.llm_provider, settings.openai_api_key)
 telemetry = TelemetryStore(settings.telemetry_db_path)
 hybrid = HybridRetriever(dense, sparse, pipeline.parents, pipeline.mapping)
 rag_service = RAGService(hybrid, memory, persona, reranker, llm)
+root = Path(__file__).resolve().parents[1]
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    restore_index()
+    yield
+
 
 app = FastAPI(
     title="NeuroRAG",
     description="Advanced RAG Agent with hybrid retrieval, reranking, context compression, and semantic memory",
     version="1.0.0",
+    lifespan=lifespan,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -52,7 +62,6 @@ app.include_router(create_document_router(pipeline, settings))
 app.include_router(create_memory_router(memory))
 
 
-@app.on_event("startup")
 def restore_index():
     restored = dense.scroll()
     if restored:
@@ -109,7 +118,6 @@ def status():
     }
 
 
-root = Path(__file__).resolve().parents[1]
 frontend = root / "frontend"
 if frontend.exists():
     app.mount("/assets", StaticFiles(directory=str(frontend / "assets")), name="assets")

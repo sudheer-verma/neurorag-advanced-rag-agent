@@ -1,0 +1,6 @@
+Retrieval Augmented Generation (RAG) combines information retrieval with text generation.
+A RAG system retrieves relevant context, such as document passages, and supplies that context to a language model.
+Hybrid search combines dense vector similarity with sparse keyword matching.
+Reciprocal Rank Fusion merges ranked lists while reducing duplicate documents.
+Parent-document retrieval retrieves a full parent passage after a matching child chunk is found.
+
