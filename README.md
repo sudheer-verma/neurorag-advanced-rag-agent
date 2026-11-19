@@ -195,3 +195,8 @@ The project is intended to be validated in this order:
 3. Start `python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`.
 4. Open `/health`, `/docs`, and `/`.
 5. Exercise chat, memory, upload, and document endpoints through the dashboard or Postman.
+
+## Screenshots
+
+Screenshots can be captured after starting the application and opening `http://127.0.0.1:8000/`.
+No screenshots are bundled because no browser rendering tool was available during implementation.

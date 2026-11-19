@@ -19,3 +19,10 @@ def test_two_session_persona_workflow():
         answer = second.json()["answer"]
         assert "```python" in answer
         assert "def merge_sort" in answer
+
+
+def test_memory_isolated_by_user():
+    with TestClient(app) as client:
+        other = client.get("/api/users/user_without_memories_persona_test/memories")
+        assert other.status_code == 200
+        assert other.json() == []
